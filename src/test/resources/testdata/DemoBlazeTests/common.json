@@ -1,0 +1,15 @@
+{
+  "baseUrl": "https://www.demoblaze.com",
+  "purchase": {
+    "phoneProductName": "Nokia lumia 1520",
+    "laptopProductName": "MacBook air",
+    "orderDetails": {
+      "name": "Ravi",
+      "country": "India",
+      "city": "Hyderabad",
+      "card": "123456789",
+      "month": "February",
+      "year": "2026"
+    }
+  }
+}

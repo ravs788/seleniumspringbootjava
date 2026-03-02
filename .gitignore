@@ -1,0 +1,65 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### OS / Logs ###
+.DS_Store
+Thumbs.db
+*.log
+
+### Maven / Java ###
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+replay_pid*
+
+### Test reports ###
+/surefire-reports/
+/failsafe-reports/
+/test-output/
+
+### Selenium / Browser artifacts ###
+/downloads/
+/screenshots/
+/videos/
+
+### Allure (if added later) ###
+/allure-results/
+/allure-report/
+
+### Local env files ###
+.env
+.env.*
+!.env.example

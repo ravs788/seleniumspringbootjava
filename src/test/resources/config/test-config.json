@@ -1,0 +1,14 @@
+{
+  "browsers": ["firefox"],
+  "baseUrl": "https://the-internet.herokuapp.com",
+  "implicitWaitSeconds": 0,
+  "pageLoadTimeoutSeconds": 300,
+  "scriptTimeoutSeconds": 30,
+  "headless": false,
+  "maxConcurrentBrowsers": 3,
+  "window": {
+    "maximize": true,
+    "width": 1280,
+    "height": 800
+  }
+}
