@@ -16,6 +16,7 @@ This project is an end-to-end UI automation framework using **Spring Boot + Sele
 - ✅ Hard cap of **max 3 concurrent browser instances** (Semaphore)
 - ✅ One WebDriver per test method (parallel-safe)
 - ✅ DemoBlaze + The-Internet test suites (10 tests total currently)
+- ✅ Class-scoped test data in JSON (per test class) + generic DataLoader abstraction
 
 See `architecture.md` for the detailed model.
 
@@ -59,7 +60,7 @@ From the project root:
 ### Run a single test class (PowerShell/Windows)
 
 ```bash
-.\mvnw.cmd -B "-Dtest=com.example.seleniumspringbootjava.MyTests" test
+.\mvnw.cmd -B "-Dtest=com.example.seleniumspringbootjava.DemoBlazeTests" test
 ```
 
 ### Parallel execution & max browsers
@@ -71,10 +72,29 @@ Parallelism is configured in `src/test/resources/junit-platform.properties`:
 
 Additionally, the framework enforces a **hard limit** of 3 concurrent browsers via a `Semaphore` in `SpringSeleniumTestBase`, so even if you change JUnit parallelism you won’t exceed 3 browser instances.
 
+## Test data (JSON)
+
+Test data is stored on the test classpath under:
+
+- `src/test/resources/testdata/<TestClassSimpleName>/common.json`
+- `src/test/resources/testdata/<TestClassSimpleName>/<testCaseId>.json` (optional; supported by loader)
+
+Loading is done via the extendable loader abstraction in `src/main/java/com/example/seleniumspringbootjava/dataloader`:
+
+```java
+Map<String, Object> common = DataLoaders.json().loadCommon(getClass());
+String url = (String) common.getOrDefault("baseUrl", baseUrl());
+```
+
+Current JSON test data examples:
+- `src/test/resources/testdata/TestInternetHeroku/common.json`
+- `src/test/resources/testdata/DemoBlazeTests/common.json`
+
 ## Notes
 
 - Uses `io.github.bonigarcia:webdrivermanager` to auto-manage Firefox/GeckoDriver.
 - Tests are real UI tests (not mocked); network and site availability can affect stability.
+- If dependency downloads fail, the environment may be restricted to a corporate Maven proxy (Nexus).
 
 ---
 

@@ -25,10 +25,21 @@ flowchart TB
 
     subgraph Config_Layer["Config (src/test/resources)"]
       JunitProps["junit-platform.properties\n- JUnit5 parallel enabled\n- method + class concurrent\n- fixed parallelism = 3"]
+      TestData["testdata/<TestClassSimpleName>/*.json\n- per-test-class common.json\n- optional per-test-case json"]
+    end
+
+    subgraph Data_Layer["Data Loading (src/main/java)"]
+      DataLoader["DataLoader (interface)\n- loadCommon/loadTestCase/load"]
+      JsonLoader["JsonDataLoader\n- Jackson\n- loads from classpath:testdata/..."]
+      DataLoaders["DataLoaders\n- json() accessor"]
     end
 
     BaseTest -->|creates per-test WebDriver| Driver["FirefoxDriver instance\n(one per test method / thread)"]
     Tests -->|uses| Pages
+    Tests -->|loads test data| DataLoaders
+    DataLoaders --> JsonLoader
+    JsonLoader --> TestData
+
     Pages --> BasePage
     BasePage -->|uses| Driver
     BasePage -->|creates| Wait["WebDriverWait\n(per page object)"]
@@ -47,6 +58,7 @@ flowchart TB
 - Browser concurrency limit: ✅ max 3 browsers (Semaphore in `SpringSeleniumTestBase`)
 - Page Object model: ✅ (`BasePage` + site-specific pages)
 - Test suites: ✅ DemoBlaze + The-Internet Herokuapp
+- Test data: ✅ JSON per test class (classpath `testdata/<TestClassSimpleName>/common.json`) via `DataLoaders.json()`
 
 ## Key design decisions
 
@@ -65,6 +77,14 @@ Even if JUnit parallelism is increased, the framework will not exceed 3 browsers
 ### 4) Page objects are instantiated per test method
 
 Tests create page objects with the current method’s driver, avoiding Spring proxying issues with WebDriver interfaces (e.g., `JavascriptExecutor`).
+
+### 5) Test data is loaded from classpath resources (JSON)
+
+Test data is stored under `src/test/resources/testdata/...` and loaded using the generic data-loader abstraction located in `src/main/java`:
+
+- `DataLoader` interface (extendable to other formats in future)
+- `JsonDataLoader` implementation (Jackson)
+- `DataLoaders` accessor (central place to retrieve loader instances)
 
 ## Notes
 
