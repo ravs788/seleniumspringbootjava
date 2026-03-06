@@ -1,0 +1,80 @@
+name: reusable-ui-tests
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: "Test tag/group to run (e.g., smoke, regression)"
+        required: true
+        type: string
+      headless:
+        description: "Run browsers in headless mode"
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  ui-tests:
+    name: Run UI tests (${{ inputs.tag }})
+    runs-on: windows-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+
+      - name: Show versions
+        shell: pwsh
+        run: |
+          java -version
+          mvn -version
+
+      - name: Run tests
+        shell: pwsh
+        run: |
+          mvn -B `
+            -DtestFailureIgnore=false `
+            -DnoJUnitRetry=true `
+            "-Dgroups=${{ inputs.tag }}" `
+            "-Dheadless=${{ inputs.headless }}" `
+            test
+
+      - name: Generate Allure report (always)
+        if: always()
+        shell: pwsh
+        run: |
+          mvn -B allure:report
+
+      - name: Upload surefire reports (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports-${{ inputs.tag }}
+          path: target/surefire-reports/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload Allure results (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ inputs.tag }}
+          path: target/allure-results/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload Allure report site (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-${{ inputs.tag }}
+          path: target/site/allure-maven-plugin/
+          if-no-files-found: warn
+          retention-days: 14

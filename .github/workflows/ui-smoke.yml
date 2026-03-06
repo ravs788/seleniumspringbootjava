@@ -1,0 +1,14 @@
+name: ui-smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  smoke:
+    uses: ./.github/workflows/reusable-ui-tests.yml
+    with:
+      tag: smoke
+      headless: true
