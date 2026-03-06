@@ -15,6 +15,7 @@ public class TestConfig {
     private boolean headless;
     private int maxConcurrentBrowsers;
     private Window window;
+    private Retry retry;
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Window {
@@ -101,6 +102,59 @@ public class TestConfig {
 
     public void setMaxConcurrentBrowsers(int maxConcurrentBrowsers) {
         this.maxConcurrentBrowsers = maxConcurrentBrowsers;
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Retry {
+        /**
+         * Total attempts including the initial attempt. Example:
+         * - maxAttempts=1 => no retries
+         * - maxAttempts=2 => 1 retry
+         */
+        private int maxAttempts = 1;
+
+        /**
+         * Fixed delay between attempts. Useful to smooth out transient grid/network
+         * issues.
+         */
+        private long backoffMillis = 0;
+
+        /**
+         * Retry only known transient Selenium issues (recommended).
+         */
+        private boolean onlyOnSeleniumTransientFailures = true;
+
+        public int getMaxAttempts() {
+            return maxAttempts;
+        }
+
+        public void setMaxAttempts(int maxAttempts) {
+            this.maxAttempts = maxAttempts;
+        }
+
+        public long getBackoffMillis() {
+            return backoffMillis;
+        }
+
+        public void setBackoffMillis(long backoffMillis) {
+            this.backoffMillis = backoffMillis;
+        }
+
+        public boolean isOnlyOnSeleniumTransientFailures() {
+            return onlyOnSeleniumTransientFailures;
+        }
+
+        public void setOnlyOnSeleniumTransientFailures(boolean onlyOnSeleniumTransientFailures) {
+            this.onlyOnSeleniumTransientFailures = onlyOnSeleniumTransientFailures;
+        }
+    }
+
+    public Retry getRetry() {
+        return retry;
+    }
+
+    public void setRetry(Retry retry) {
+        this.retry = retry;
     }
 
     public Window getWindow() {

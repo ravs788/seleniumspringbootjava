@@ -1,14 +1,19 @@
 {
-  "browsers": ["firefox"],
+  "browsers": ["chrome", "edge", "firefox"],
   "baseUrl": "https://the-internet.herokuapp.com",
   "implicitWaitSeconds": 0,
   "pageLoadTimeoutSeconds": 300,
   "scriptTimeoutSeconds": 30,
-  "headless": false,
+  "headless": true,
   "maxConcurrentBrowsers": 3,
   "window": {
     "maximize": true,
     "width": 1280,
     "height": 800
+  },
+  "retry": {
+    "maxAttempts": 2,
+    "backoffMillis": 1000,
+    "onlyOnSeleniumTransientFailures": true
   }
 }

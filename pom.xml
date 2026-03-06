@@ -29,6 +29,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<allure.version>2.27.0</allure.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -49,13 +50,6 @@
 			<version>4.18.1</version>
 		</dependency>
 
-		<!-- WebDriver binaries manager (ChromeDriver/GeckoDriver/etc) -->
-		<dependency>
-			<groupId>io.github.bonigarcia</groupId>
-			<artifactId>webdrivermanager</artifactId>
-			<version>5.7.0</version>
-			<scope>test</scope>
-		</dependency>
 
 		<!-- JUnit 5 (included by starter test, but kept explicit for clarity) -->
 		<dependency>
@@ -80,6 +74,14 @@
 		<dependency>
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-launcher</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Allure reporting (JUnit 5) -->
+		<dependency>
+			<groupId>io.qameta.allure</groupId>
+			<artifactId>allure-junit5</artifactId>
+			<version>${allure.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -114,6 +116,21 @@
 					<!-- Disable Surefire JVM forking so Spring context caching works as expected -->
 					<forkCount>0</forkCount>
 					<reuseForks>true</reuseForks>
+
+					<!-- Allure results output -->
+					<systemPropertyVariables>
+						<allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+
+			<!-- Allure report generation (requires Allure CLI via Maven plugin) -->
+			<plugin>
+				<groupId>io.qameta.allure</groupId>
+				<artifactId>allure-maven</artifactId>
+				<version>2.12.0</version>
+				<configuration>
+					<reportVersion>${allure.version}</reportVersion>
 				</configuration>
 			</plugin>
 

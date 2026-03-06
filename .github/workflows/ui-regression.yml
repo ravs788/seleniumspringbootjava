@@ -1,0 +1,16 @@
+name: ui-regression
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [closed]
+    branches: ["main"]
+
+jobs:
+  regression:
+    # Run only when a PR is merged (closed + merged=true)
+    if: ${{ github.event.pull_request.merged == true }}
+    uses: ./.github/workflows/reusable-ui-tests.yml
+    with:
+      tag: regression
+      headless: true

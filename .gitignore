@@ -58,6 +58,7 @@ replay_pid*
 ### Allure (if added later) ###
 /allure-results/
 /allure-report/
+/.allure/
 
 ### Local env files ###
 .env

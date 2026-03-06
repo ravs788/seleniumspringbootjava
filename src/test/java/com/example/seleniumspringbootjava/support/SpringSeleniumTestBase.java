@@ -8,6 +8,7 @@ import com.example.seleniumspringbootjava.config.TestConfig;
 import com.example.seleniumspringbootjava.config.TestConfigLoader;
 import com.example.seleniumspringbootjava.config.TestScopeConfig;
 import com.example.seleniumspringbootjava.config.WebDriverFactory;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInstance;
@@ -32,6 +33,7 @@ import java.util.concurrent.Semaphore;
 @SpringBootTest(classes = SeleniumspringbootjavaApplication.class)
 @ContextConfiguration(classes = { TestScopeConfig.class, SeleniumTestConfig.class, PageObjectConfig.class })
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
+@ExtendWith({ RetryExtension.class, AllureAttachmentsExtension.class })
 public abstract class SpringSeleniumTestBase {
 
     private static final TestConfig CONFIG = TestConfigLoader.load();
@@ -67,6 +69,7 @@ public abstract class SpringSeleniumTestBase {
 
         WebDriver driver = WebDriverFactory.create(browser, CONFIG);
         DRIVER.set(driver);
+        DriverStore.set(driver);
     }
 
     @AfterEach
@@ -79,6 +82,7 @@ public abstract class SpringSeleniumTestBase {
         } finally {
             DRIVER.remove();
             CURRENT_BROWSER.remove();
+            DriverStore.clear();
             TestClassScopeContext.clear();
             BROWSER_LIMITER.release();
         }

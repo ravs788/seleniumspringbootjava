@@ -1,0 +1,13 @@
+name: ui-smoke
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  smoke:
+    uses: ./.github/workflows/reusable-ui-tests.yml
+    with:
+      tag: smoke
+      headless: true

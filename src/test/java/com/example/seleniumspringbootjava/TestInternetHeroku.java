@@ -6,7 +6,9 @@ import com.example.seleniumspringbootjava.pages.theinternet.DropDownPage;
 import com.example.seleniumspringbootjava.pages.theinternet.HomePage;
 import com.example.seleniumspringbootjava.dataloader.DataLoaders;
 import com.example.seleniumspringbootjava.support.SpringSeleniumTestBase;
+import com.example.seleniumspringbootjava.support.Tags;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.openqa.selenium.WebDriver;
 
 import java.util.Map;
@@ -47,6 +49,8 @@ class TestInternetHeroku extends SpringSeleniumTestBase {
     }
 
     @com.example.seleniumspringbootjava.support.MultiBrowserTest
+    @Tag(Tags.SMOKE)
+    @Tag(Tags.REGRESSION)
     void addAndRemoveElements() {
         homePage.navigateToPage("Add/Remove Elements");
         addRemoveElePage.addElements(2);
@@ -62,6 +66,7 @@ class TestInternetHeroku extends SpringSeleniumTestBase {
     }
 
     @com.example.seleniumspringbootjava.support.MultiBrowserTest
+    @Tag(Tags.REGRESSION)
     void addRemoveElementsZeroIsStable() {
         homePage.navigateToPage("Add/Remove Elements");
         addRemoveElePage.deleteAll();
@@ -69,6 +74,8 @@ class TestInternetHeroku extends SpringSeleniumTestBase {
     }
 
     @com.example.seleniumspringbootjava.support.MultiBrowserTest
+    @Tag(Tags.SMOKE)
+    @Tag(Tags.REGRESSION)
     void dropdownSelection() {
         homePage.navigateToPage("Dropdown");
 
@@ -77,6 +84,7 @@ class TestInternetHeroku extends SpringSeleniumTestBase {
     }
 
     @com.example.seleniumspringbootjava.support.MultiBrowserTest
+    @Tag(Tags.REGRESSION)
     void dropdownOption2Selection() {
         homePage.navigateToPage("Dropdown");
 
@@ -85,6 +93,8 @@ class TestInternetHeroku extends SpringSeleniumTestBase {
     }
 
     @com.example.seleniumspringbootjava.support.MultiBrowserTest
+    @Tag(Tags.SMOKE)
+    @Tag(Tags.REGRESSION)
     void handleAuthPage() {
         // Basic auth is flaky in modern Firefox due to native auth prompt behavior.
         // Navigate directly with credentials (page object handles retry).
@@ -94,6 +104,7 @@ class TestInternetHeroku extends SpringSeleniumTestBase {
     }
 
     @com.example.seleniumspringbootjava.support.MultiBrowserTest
+    @Tag(Tags.REGRESSION)
     void basicAuthValidCredentialsShowsSuccessMessage() {
         basicAuthPage.handleAuth("admin", "admin");
 
