@@ -75,6 +75,14 @@ public final class TestConfigLoader {
         if (cfg.getMaxConcurrentBrowsers() <= 0) {
             throw new IllegalStateException("Config 'maxConcurrentBrowsers' must be > 0.");
         }
+
+        // Allow overriding headless mode from CLI without editing JSON:
+        // -Dheadless=true|false
+        String headlessOverride = System.getProperty("headless");
+        if (headlessOverride != null && !headlessOverride.isBlank()) {
+            cfg.setHeadless(Boolean.parseBoolean(headlessOverride));
+        }
+
         if (cfg.getWindow() == null) {
             TestConfig.Window w = new TestConfig.Window();
             w.setMaximize(true);

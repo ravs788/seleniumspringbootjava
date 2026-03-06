@@ -6,9 +6,11 @@ import com.example.seleniumspringbootjava.pages.demoblaze.CartPage;
 import com.example.seleniumspringbootjava.pages.demoblaze.DemoBlazeHomePage;
 import com.example.seleniumspringbootjava.pages.demoblaze.OrderModal;
 import com.example.seleniumspringbootjava.pages.demoblaze.ProductPage;
+import com.example.seleniumspringbootjava.support.MultiBrowserTest;
 import com.example.seleniumspringbootjava.support.SpringSeleniumTestBase;
+import com.example.seleniumspringbootjava.support.Tags;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Tag;
 import org.openqa.selenium.WebDriver;
 
 import java.util.Map;
@@ -34,7 +36,9 @@ class DemoBlazeTests extends SpringSeleniumTestBase {
         driver.get(url);
     }
 
-    @Test
+    @MultiBrowserTest
+    @Tag(Tags.SMOKE)
+    @Tag(Tags.REGRESSION)
     void categoriesNavigationDoesNotError() {
         DemoBlazeHomePage home = new DemoBlazeHomePage(driver());
 
@@ -44,7 +48,9 @@ class DemoBlazeTests extends SpringSeleniumTestBase {
         assertDoesNotThrow(home::goHome);
     }
 
-    @Test
+    @MultiBrowserTest
+    @Tag(Tags.SMOKE)
+    @Tag(Tags.REGRESSION)
     void openProductDetailsPageLoads() {
         DemoBlazeHomePage home = new DemoBlazeHomePage(driver());
         home.selectPhones();
@@ -55,7 +61,9 @@ class DemoBlazeTests extends SpringSeleniumTestBase {
         // is a strong signal.
     }
 
-    @Test
+    @MultiBrowserTest
+    @Tag(Tags.SMOKE)
+    @Tag(Tags.REGRESSION)
     void cartPageLoadsFromHome() {
         DemoBlazeHomePage home = new DemoBlazeHomePage(driver());
 
@@ -68,7 +76,9 @@ class DemoBlazeTests extends SpringSeleniumTestBase {
         assertTrue(url.contains("cart"), "Expected URL to contain 'cart' but was: " + url);
     }
 
-    @Test
+    @MultiBrowserTest
+    @Tag(Tags.SMOKE)
+    @Tag(Tags.REGRESSION)
     void purchaseFlowWorks() {
         Map<String, Object> common = DataLoaders.json().loadCommon(getClass());
 
