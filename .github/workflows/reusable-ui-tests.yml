@@ -36,7 +36,7 @@ jobs:
           java -version
           mvn -version
 
-      - name: Run tests
+      - name: Run tests (CI single-browser)
         shell: pwsh
         run: |
           mvn -B `
@@ -44,6 +44,7 @@ jobs:
             -DnoJUnitRetry=true `
             "-Dgroups=${{ inputs.tag }}" `
             "-Dheadless=${{ inputs.headless }}" `
+            "-Dbrowser=chrome" `
             test
 
       - name: Generate Allure report (always)
