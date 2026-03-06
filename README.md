@@ -48,6 +48,13 @@ seleniumspringbootjava/
 ---
 
 ## 🛠️ How to run
+#### Run tests on Selenium Grid (local, Windows)
+See `docs/selenium-grid-windows.md` for starting the Grid hub/nodes and the ports used (`http://localhost:5555/`).
+
+Quick run (PowerShell):
+```powershell
+cmd /c scripts\bat\run-grid-tests.bat smoke true http://localhost:5555/ true
+```
 
 From the project root:
 
@@ -55,6 +62,12 @@ From the project root:
 
 ```bash
 .\mvnw.cmd -B test
+```
+
+### Run tests locally by tag/browser (Windows helper script)
+
+```powershell
+.\scripts\bat\run-tests.bat smoke chrome true
 ```
 
 ### Run a single test class (PowerShell/Windows)
@@ -89,6 +102,29 @@ String url = (String) common.getOrDefault("baseUrl", baseUrl());
 Current JSON test data examples:
 - `src/test/resources/testdata/TestInternetHeroku/common.json`
 - `src/test/resources/testdata/DemoBlazeTests/common.json`
+
+## Allure reporting
+
+This project generates Allure result files during test execution:
+
+- results directory: `target/allure-results`
+
+To generate a local HTML report (Maven plugin):
+
+```bash
+mvn allure:report
+```
+
+To open the report in a browser (plugin supports `allure:serve` when Allure CLI is available via the plugin):
+
+```bash
+mvn allure:serve
+```
+
+On test failure, the framework attaches to Allure (best-effort):
+- Screenshot (PNG)
+- Current URL
+- Page source (HTML)
 
 ## Notes
 
