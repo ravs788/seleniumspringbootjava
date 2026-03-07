@@ -1,26 +1,30 @@
 # Selenium Spring Boot Java — UI Automation Framework
 
-An end-to-end UI automation framework built with **Java 21**, **Spring Boot**, **Selenium 4**, and **JUnit 5** using the **Page Object Model** and **parallel execution**.
+An end-to-end UI automation framework built with **Java 21**, **Spring Boot**, **Selenium 4**, and **JUnit 5**, following the **Page Object Model (POM)** with **safe parallel execution**.
+
+[![Issues](https://img.shields.io/github/issues/ravs788/seleniumspringbootjava)](https://github.com/ravs788/seleniumspringbootjava/issues) [![Forks](https://img.shields.io/github/forks/ravs788/seleniumspringbootjava?style=social)](https://github.com/ravs788/seleniumspringbootjava/network/members) [![Stars](https://img.shields.io/github/stars/ravs788/seleniumspringbootjava?style=social)](https://github.com/ravs788/seleniumspringbootjava/stargazers) [![License](https://img.shields.io/github/license/ravs788/seleniumspringbootjava)](https://github.com/ravs788/seleniumspringbootjava/blob/main/LICENSE)
+
+> Note: If badges don’t render in VS Code Markdown Preview, it’s typically because external image loading is blocked by your network/proxy/settings. They render on GitHub.
 
 ---
 
-## Status
+## 📊 Summary of Features
 
-Current implementation highlights:
-
-- Spring Boot test scaffolding (`boot 4.0.3`)
-- Page Object Model (`BasePage` + site-specific pages)
-- Parallel execution via JUnit 5 (methods + classes concurrent)
-- Hard cap of **max 3 concurrent browser instances** via `Semaphore` (parallel-safe)
-- One WebDriver per test method
-- Test suites implemented:
-  - DemoBlaze (`DemoBlazeTests`)
-  - The Internet (`TestInternetHeroku`)
-- JSON test data per test class via loader abstraction (`DataLoaders`)
+| Feature | Status |
+| --- | --- |
+| Spring Boot-based test scaffolding | ✅ Implemented (`boot 4.0.3`) |
+| Page Object Model (BasePage + site pages) | ✅ Implemented |
+| Parallel execution (JUnit 5: methods + classes concurrent) | ✅ Implemented |
+| Parallel safety cap (max 3 concurrent browsers) | ✅ Implemented (`Semaphore`) |
+| One WebDriver per test method | ✅ Implemented |
+| JSON test data per test class | ✅ Implemented (`DataLoaders`) |
+| Selenium Grid support (Windows runbook + scripts) | ✅ Implemented |
+| Reporting (Allure) | ✅ Implemented |
+| CI badges/workflows | ✅ Implemented (GitHub Actions: `ui-smoke`, `ui-regression`) |
 
 ---
 
-## Intended audience
+## 👥 Intended audience
 
 - SDETs/QA engineers building a scalable Selenium framework baseline
 - Developers wanting a reference for JUnit 5 parallelism + safe WebDriver lifecycle
@@ -28,7 +32,7 @@ Current implementation highlights:
 
 ---
 
-## Quick links
+## 🔗 Quick links
 
 - Architecture: [`architecture.md`](architecture.md)
 - Selenium Grid (Windows): [`docs/selenium-grid-windows.md`](docs/selenium-grid-windows.md)
@@ -41,38 +45,48 @@ Current implementation highlights:
 
 ---
 
-## Project structure (current)
+## 📁 Project structure
+
+| Path | Purpose |
+| --- | --- |
+| `src/main/java/.../pages/` | Page Objects (POM) |
+| `src/main/java/.../model/` | Domain models |
+| `src/main/java/.../dataloader/` | JSON/data loading helpers |
+| `src/test/java/.../` | JUnit 5 tests + test infra (extensions/config) |
+| `src/test/resources/config/` | Test configuration (`test-config.json`) |
+| `src/test/resources/testdata/` | Per-suite JSON test data |
+| `docs/` | Runbooks + manual test cases |
+| `scripts/bat/` | Windows helper scripts (local + Grid runs) |
 
 ```text
 seleniumspringbootjava/
 ├── pom.xml
 ├── mvnw / mvnw.cmd
 ├── scripts/
-│   └── bat/                          # Windows helper scripts (Grid + local runs)
+│   └── bat/
 ├── docs/
-│   ├── selenium-grid-windows.md      # Grid setup/runbook (Windows)
-│   ├── manual-testcases-*.md         # Manual test case documentation
-│   └── migration-status.md
 ├── src/
-│   ├── main/java/.../pages           # Page Objects
+│   ├── main/java/.../pages
+│   ├── main/java/.../model
+│   ├── main/java/.../dataloader
 │   └── test/
-│       ├── java/...                  # JUnit 5 tests + test infrastructure
-│       └── resources/
-│           ├── junit-platform.properties
-│           ├── config/test-config.json
-│           └── testdata/...
+│       ├── java/...
+│       └── resources/...
 └── target/                           # build output (ignored)
 ```
 
 ---
 
-## Getting started (local)
-
-### Prerequisites
+## 🛠️ Prerequisites
 
 - Java 21
-- Maven (or use Maven Wrapper `mvnw.cmd`)
-- Browsers installed: Chrome / Edge / Firefox
+- Maven (or Maven Wrapper `mvnw.cmd`)
+- Browser(s): Chrome / Edge / Firefox
+- (Optional) Allure CLI if you want `allure serve` locally
+
+---
+
+## 🚀 Getting started (local)
 
 ### Run all tests (recommended: Maven wrapper)
 
@@ -88,7 +102,7 @@ seleniumspringbootjava/
 
 ---
 
-## Running tests
+## 🧪 Running tests
 
 ### Local runs by tag/browser (Windows helper)
 
@@ -108,7 +122,7 @@ See [`docs/selenium-grid-windows.md`](docs/selenium-grid-windows.md).
 Grid URL used by this repo:
 - `http://localhost:5555/`
 
-Quick run (PowerShell):
+Quick run:
 
 ```powershell
 cmd /c scripts\bat\run-grid-tests.bat smoke true http://localhost:5555/ true
@@ -116,9 +130,9 @@ cmd /c scripts\bat\run-grid-tests.bat smoke true http://localhost:5555/ true
 
 ---
 
-## Reporting (Allure)
+## 📊 Reporting (Allure)
 
-This project writes Allure results to:
+Allure results directory:
 - `target/allure-results`
 
 Generate an HTML report:
@@ -132,7 +146,14 @@ Open the generated report:
 
 ---
 
-## Troubleshooting
+## 🧩 Test suites
+
+- **DemoBlaze**: `com.example.seleniumspringbootjava.DemoBlazeTests`
+- **The Internet**: `com.example.seleniumspringbootjava.TestInternetHeroku`
+
+---
+
+## 🧰 Troubleshooting
 
 ### Grid “address already in use”
 - Identify who is listening on ports and stop the process, or change Grid ports.
@@ -146,7 +167,7 @@ These tests run against real public websites. If `demoblaze.com` or `the-interne
 
 ---
 
-## Roadmap
+## 🗺️ Roadmap
 
 - Stabilize external-site tests (timeouts/retries) and add a small “offline” smoke suite (`about:blank`) for CI reliability
 - Add CI documentation and badges once workflows are enabled on the default branch
@@ -154,7 +175,7 @@ These tests run against real public websites. If `demoblaze.com` or `the-interne
 
 ---
 
-## Documentation maintenance
+## 📝 Documentation maintenance
 
 When making major changes (driver lifecycle, parallelism, config), update:
 - `README.md`
